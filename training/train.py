@@ -71,7 +71,12 @@ def main() -> None:
 
     ensure_directory(MODEL_PATH.parent)
     torch.save({"model_state_dict": model.state_dict()}, MODEL_PATH)
-    metadata = {"model_name": "efficientnet_b0", "class_names": list(CLASS_NAMES), "image_size": 224}
+    metadata = {
+        "model_name": "efficientnet_b0",
+        "class_names": train_set.classes,
+        "class_to_idx": train_set.class_to_idx,
+        "image_size": 224,
+    }
     MODEL_PATH.with_suffix(".json").write_text(json.dumps(metadata, indent=2), encoding="utf-8")
     print(f"Saved model to {MODEL_PATH}")
 
