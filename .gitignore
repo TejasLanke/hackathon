@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.streamlit/
+*.py[cod]
+.env
+data/raw/**
+data/processed/**
+data/sample/**
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/sample/.gitkeep
+models/*.pth
+models/*.json
+outputs/*
+!outputs/.gitkeep
