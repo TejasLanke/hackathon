@@ -7,7 +7,7 @@ import torch
 from PIL import Image
 from torchvision import transforms
 
-from src.config import IMAGE_SIZE, NORMALIZATION_MEAN, NORMALIZATION_STD
+from src.config import IMAGE_SIZE, IMAGENET_MEAN, IMAGENET_STD
 
 
 def ensure_rgb(image: Image.Image | np.ndarray) -> Image.Image:
@@ -22,7 +22,7 @@ def get_inference_transform() -> transforms.Compose:
         [
             transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
             transforms.ToTensor(),
-            transforms.Normalize(NORMALIZATION_MEAN, NORMALIZATION_STD),
+            transforms.Normalize(IMAGENET_MEAN, IMAGENET_STD),
         ]
     )
 
@@ -30,3 +30,8 @@ def get_inference_transform() -> transforms.Compose:
 def preprocess_image(image: Image.Image | np.ndarray) -> torch.Tensor:
     """Return a normalized CHW tensor suitable for one-image model inference."""
     return get_inference_transform()(ensure_rgb(image))
+
+
+def preprocess_batch(image: Image.Image | np.ndarray) -> torch.Tensor:
+    """Return a normalized NCHW batch tensor for single-image inference."""
+    return preprocess_image(image).unsqueeze(0)
